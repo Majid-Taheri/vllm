@@ -244,6 +244,7 @@ if TYPE_CHECKING:
     VLLM_SHARED_EXPERTS_STREAM_TOKEN_THRESHOLD: int = 256
     VLLM_COMPILE_CACHE_SAVE_FORMAT: Literal["binary", "unpacked"] = "binary"
     VLLM_USE_V2_MODEL_RUNNER: bool = False
+    VLLM_DEBUG_MFU_METRICS: bool = False
 
 
 def get_default_cache_root():
@@ -1570,7 +1571,12 @@ environment_variables: dict[str, Callable[[], Any]] = {
     # persistent caching, and bulk operations for improved LoRA performance.
     # When disabled, falls back to the original LoRA tensor processing method.
     # Default: disabled (0) for compatibility, enable with SLAB_OPTIMIZATION=1
-    "SLAB_OPTIMIZATION": lambda: bool(int(os.getenv("SLAB_OPTIMIZATION", "0"))),
+    "SLAB_OPTIMIZATION": lambda: bool(int(os.getenv("SLAB_OPTIMIZATION", "0"))
+    ),
+    # Debug logging for --enable-mfu-metrics
+    "VLLM_DEBUG_MFU_METRICS": lambda: bool(
+        int(os.getenv("VLLM_DEBUG_MFU_METRICS", "0"))
+    ),
 }
 
 # --8<-- [end:env-vars-definition]
