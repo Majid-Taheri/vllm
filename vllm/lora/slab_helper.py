@@ -4,7 +4,7 @@
 import hashlib
 import threading
 import time
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import torch
 
@@ -14,6 +14,11 @@ from vllm.lora.lora_weights import LoRALayerWeights, PackedLoRALayerWeights
 
 # Import here to avoid circular dependency
 from vllm.lora.utils import parse_fine_tuned_lora_name
+
+if TYPE_CHECKING:
+    from vllm.config.lora import LoRAConfig
+    from vllm.lora.layers import BaseLayerWithLoRA
+    from vllm.lora.lora_model import LoRAModel
 
 logger = init_logger(__name__)
 
@@ -214,10 +219,10 @@ def get_ultra_fast_pool():
 
 # Main public interface with CPU caching and disk save/load
 def build_target_matched_slab(
-    lora_model,
-    target_modules,
-    max_loras,
-    lora_config,
+    lora_model: "LoRAModel",
+    target_modules: dict[str, "BaseLayerWithLoRA"] | None,
+    max_loras: int,
+    lora_config: "LoRAConfig | None",
     slab_path: str | None = None,
 ):
     """
