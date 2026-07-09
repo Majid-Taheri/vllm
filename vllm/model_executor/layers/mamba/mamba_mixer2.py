@@ -27,6 +27,9 @@ from vllm.model_executor.layers.mamba.mamba_utils import (
     MambaStateShapeCalculator,
     is_conv_state_dim_first,
 )
+from vllm.model_executor.layers.mamba.ops.init_state import (
+    mamba_gather_initial_states,
+)
 from vllm.model_executor.layers.mamba.ops.causal_conv1d import (
     causal_conv1d_fn,
     causal_conv1d_update,
@@ -837,11 +840,21 @@ class MambaMixer2(MambaBase, PluggableLayer):
                     kernel_ssm_indices = state_indices_tensor_p.gather(
                         1, block_idx_last_computed_token_p.unsqueeze(1)
                     ).squeeze(1)
-                initial_states = torch.where(
-                    has_initial_states_p[:, None, None, None],
-                    ssm_state[kernel_ssm_indices],
-                    0,
-                )
+                # Fused gather: avoids materialising the broadcast zero
+                # tensor (FillFunctor) that ``torch.where(..., 0)`` would
+                # produce. CUDA only — fall back to torch.where elsewhere.
+                if ssm_state.is_cuda:
+                    initial_states = mamba_gather_initial_states(
+                        ssm_state,
+                        kernel_ssm_indices,
+                        has_initial_states_p,
+                    )
+                else:
+                    initial_states = torch.where(
+                        has_initial_states_p[:, None, None, None],
+                        ssm_state[kernel_ssm_indices],
+                        0,
+                    )
 
             # NOTE: final output is an in-place update of out tensor
             assert preallocated_ssm_out_p is not None

@@ -2,15 +2,15 @@
     "triton_version": "3.6.0",
     "8": {
         "BLOCK_SIZE_M": 4,
-        "num_warps": 4
+        "num_warps": 2
     },
     "16": {
-        "BLOCK_SIZE_M": 4,
-        "num_warps": 1
+        "BLOCK_SIZE_M": 8,
+        "num_warps": 8
     },
     "32": {
-        "BLOCK_SIZE_M": 4,
-        "num_warps": 1
+        "BLOCK_SIZE_M": 8,
+        "num_warps": 8
     },
     "64": {
         "BLOCK_SIZE_M": 8,
@@ -37,51 +37,51 @@
         "num_warps": 8
     },
     "4096": {
-        "BLOCK_SIZE_M": 16,
-        "num_warps": 8
+        "BLOCK_SIZE_M": 8,
+        "num_warps": 1
     },
     "8192": {
-        "BLOCK_SIZE_M": 32,
-        "num_warps": 1
+        "BLOCK_SIZE_M": 64,
+        "num_warps": 2
     },
     "12288": {
-        "BLOCK_SIZE_M": 16,
-        "num_warps": 1
+        "BLOCK_SIZE_M": 8,
+        "num_warps": 8
     },
     "16384": {
-        "BLOCK_SIZE_M": 32,
-        "num_warps": 4
+        "BLOCK_SIZE_M": 64,
+        "num_warps": 2
     },
     "24576": {
-        "BLOCK_SIZE_M": 32,
-        "num_warps": 4
+        "BLOCK_SIZE_M": 16,
+        "num_warps": 1
     },
     "32768": {
         "BLOCK_SIZE_M": 4,
-        "num_warps": 1
+        "num_warps": 4
     },
     "49152": {
-        "BLOCK_SIZE_M": 32,
-        "num_warps": 2
+        "BLOCK_SIZE_M": 16,
+        "num_warps": 1
     },
     "65536": {
-        "BLOCK_SIZE_M": 32,
-        "num_warps": 1
+        "BLOCK_SIZE_M": 8,
+        "num_warps": 8
     },
     "98304": {
-        "BLOCK_SIZE_M": 4,
-        "num_warps": 1
+        "BLOCK_SIZE_M": 32,
+        "num_warps": 4
     },
     "131072": {
-        "BLOCK_SIZE_M": 4,
-        "num_warps": 1
+        "BLOCK_SIZE_M": 32,
+        "num_warps": 8
     },
     "196608": {
         "BLOCK_SIZE_M": 32,
-        "num_warps": 1
+        "num_warps": 8
     },
     "262144": {
-        "BLOCK_SIZE_M": 16,
-        "num_warps": 1
+        "BLOCK_SIZE_M": 32,
+        "num_warps": 8
     }
 }
